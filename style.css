@@ -1,0 +1,79 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e9eff1; /* Color de fondo claro */
+    color: #333; /* Color de texto oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Encabezado del formulario */
+h1 {
+    margin-bottom: 10px;
+    font-size: 2.5em;
+    color: #1877f2; /* Azul de Facebook */
+    text-align: center;
+    position: absolute;
+    top: 1px; /* Ajusta la posición superior del encabezado */
+    width: 80%; /* Para centrar el texto en el formulario */
+}
+
+form {
+    background: white; /* Fondo blanco para el formulario */
+    border-radius: 8px;
+    padding: 70px 30px 30px; /* Espaciado adicional para que el título no se solape */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px; /* Ancho fijo para el formulario */
+    position: relative; /* Para posicionar el encabezado */
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 1.1em;
+    color: #333; /* Color de texto oscuro para las etiquetas */
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border: 1px solid #1877f2; /* Borde azul de Facebook al enfocar */
+    outline: none;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #1877f2; /* Azul de Facebook */
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: #155dbb; /* Color más oscuro al pasar el ratón */
+}
+
+/* Estilo adicional para mejorar el aspecto en móviles */
+@media (max-width: 400px) {
+    form {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> <!-- Enlazamos el archivo CSS -->
+    <title>Registro</title>
+</head>
+<body>
+    <h1>Registro de Asistencia</h1>
+
+    <!-- Formulario de registro de asistencia -->
+    <form id="asistenciaForm">
+        <label for="numeroSocio">Número del Socio:</label>
+        <input type="text" id="numeroSocio" name="numeroSocio" required>
+
+        <label for="nombreSocio">Nombre del Socio:</label>
+        <input type="text" id="nombreSocio" name="nombreSocio" readonly>
+
+        <button type="submit">Registrar Asistencia</button>
+        <button type="button" id="verListado">Ver Listado de Asistencia</button>
+    </form>
+
+    <!-- Tabla para mostrar listado de asistencia -->
+    <div id="listadoAsistencia" style="display:none;">
+        <table id="asistenciaTable">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nombre del Socio</th>
+                    <th>Número del Socio</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody id="asistenciaList"></tbody>
+        </table>
+
+        <button id="imprimir">Imprimir Lista de Asistencia</button>
+        <button id="limpiar">Limpiar Registros</button>
+        <button id="volver">Volver a Registro</button>
+    </div>
+
+    <script>
+        // Lista de socios predefinida
+        const socios = {
+            "1": "Juan Pérez",
+            "2": "Ana García",
+            "3": "Carlos Sánchez",
+            "4": "Marta López",
+            "5": "Juan Pérez",
+            "6": "Ana García",
+            "7": "Carlos Sánchez",
+            "8": "Marta López"
+        };
+
+        // Rellenar automáticamente el nombre del socio
+        document.getElementById('numeroSocio').addEventListener('input', function() {
+            const numeroSocio = this.value;
+            const nombreSocio = socios[numeroSocio] || ''; // Si no encuentra el socio, retorna vacío
+            document.getElementById('nombreSocio').value = nombreSocio;
+        });
+
+        // Registrar asistencia
+        document.getElementById('asistenciaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const numeroSocio = document.getElementById('numeroSocio').value;
+            const nombreSocio = document.getElementById('nombreSocio').value;
+
+            if (!nombreSocio) {
+                alert("Número de socio no válido.");
+                return;
+            }
+
+            let asistencia = JSON.parse(localStorage.getItem('asistencia')) || [];
+
+            // Agregar el registro de asistencia
+            asistencia.push({
+                nombreSocio: nombreSocio,
+                numeroSocio: numeroSocio,
+                fecha: new Date().toLocaleString()
+            });
+
+            // Guardar en localStorage
+            localStorage.setItem('asistencia', JSON.stringify(asistencia));
+
+            // Limpiar el formulario
+            document.getElementById('asistenciaForm').reset();
+        });
+
+        // Ver listado de asistencia
+        document.getElementById('verListado').addEventListener('click', function() {
+            cargarAsistencia();
+            document.getElementById('asistenciaForm').style.display = 'none';
+            document.getElementById('listadoAsistencia').style.display = 'block';
+        });
+
+        // Volver al formulario de registro
+        document.getElementById('volver').addEventListener('click', function() {
+            document.getElementById('asistenciaForm').style.display = 'block';
+            document.getElementById('listadoAsistencia').style.display = 'none';
+        });
+
+        // Cargar asistencia desde localStorage
+        function cargarAsistencia() {
+            let asistencia = JSON.parse(localStorage.getItem('asistencia')) || [];
+            let asistenciaList = document.getElementById('asistenciaList');
+            asistenciaList.innerHTML = '';
+
+            asistencia.forEach((item, index) => {
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${item.nombreSocio}</td>
+                    <td>${item.numeroSocio}</td>
+                    <td>${item.fecha}</td>
+                `;
+                asistenciaList.appendChild(row);
+            });
+
+            let totalRow = document.createElement('tr');
+            totalRow.innerHTML = `
+                <td colspan="3" style="text-align: right;"><strong>Total:</strong></td>
+                <td>${asistencia.length}</td>
+            `;
+            asistenciaList.appendChild(totalRow);
+        }
+
+        // Imprimir listado
+        document.getElementById('imprimir').addEventListener('click', function() {
+            window.print();
+        });
+
+        // Limpiar registros
+        document.getElementById('limpiar').addEventListener('click', function() {
+            localStorage.removeItem('asistencia');
+            cargarAsistencia();
+            alert('Registros limpiados.');
+        });
+    </script>
+</body>
+</html>
